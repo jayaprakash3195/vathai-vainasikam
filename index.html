@@ -5,87 +5,136 @@
   <title>நட்சத்திர கணிப்பு</title>
   <style>
     body {
-      background-color: yellow;
-      opacity: 0.7;
+      background: linear-gradient(to right, #fff5e1, #ffe6f0);
       font-family: 'Noto Sans Tamil', Arial, sans-serif;
-      max-width: 500px;
-      margin: 2rem auto;
-      padding: 1rem;
-      background: #f2f2f2;
-      border-radius: 100px;
+      margin: 0;
+      padding: 0;
     }
-    label, select, button {
+
+    .container {
+      max-width: 600px;
+      margin: 4rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: #4e1a3d;
+    }
+
+    label {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      background-color: #e91e63;
+      color: white;
       font-size: 1.1rem;
-      margin-bottom: 1rem;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
-    select, button {
-      width: 50%;
-      padding: 1.0rem;
+
+    button:hover {
+      background-color: #c2185b;
     }
+
     .result {
-      margin-top: 1.5rem;
-      background: rgb(244, 212, 215);
-      padding: 1rem;
-      border-radius: 6px;
-      font-size: 1.2rem; 
-      color: #1b5e20;
+      margin-top: 2rem;
+      background: #fdf4f5;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #ffcdd2;
+      color: #2e7d32;
+      font-size: 1.2rem;
+      text-align: left;
+      line-height: 2rem;
+    }
+
+    .result strong {
+      color: #ad1457;
+    }
+
+    .emoji {
+      font-size: 1.4rem;
+      margin-right: 0.5rem;
     }
   </style>
 </head>
 <body>
 
-<h2>நட்சத்திர கணிப்பு</h2>
+  <div class="container">
+    <h2>🌟 நட்சத்திர கணிப்பு</h2>
 
-<label for="nakshatra">உங்கள் நட்சத்திரத்தைத் தேர்ந்தெடுக்கவும்:</label>
-<select id="nakshatra">
-  <option value="">-- தேர்வு செய்யவும் --</option>
-</select>
+    <label for="nakshatra">🪷 உங்கள் நட்சத்திரத்தைத் தேர்ந்தெடுக்கவும்:</label>
+    <select id="nakshatra">
+      <option value="">-- தேர்வு செய்யவும் --</option>
+    </select>
 
-<button onclick="calculate()">கணக்கிடு</button>
+    <button onclick="calculate()">🔍 கணக்கிடு</button>
 
-<div id="output" class="result" style="display:none;"></div>
+    <div id="output" class="result" style="display:none;"></div>
+  </div>
 
-<script>
-  const nakshatras = [
-    "அசுவினி (விஷ்கம்பம்)", "பரணி (ப்ரீதி)", "கார்த்திகை (ஆயுஷ்மான்)", "ரோகிணி (சௌபாக்கியம்)", "மிருகசீரிடம் (சோபனம்)", "திருவாதிரை (அதிகண்டம்)", "புனர்பூசம் (சுகர்மம்)",
-    "பூசம் (திருதி)", "ஆயில்யம் (சூலம்)", "மகம் (கண்டம்)", "பூரம் (விருத்தி)", "உத்திரம் (துருவம்)", "அஸ்தம் (வியாகாதம்)", "சித்திரை (ஹர்சனம்)", "சுவாதி (வஜ்ரம்)",
-    "விசாகம் (சித்தி)", "அனுஷம் (வியதீபாதம்)", "கேட்டை (வரியான்)", "மூலம் (பரீகம்)", "பூராடம் (சிவம்)", "உத்திராடம் (சித்தம்)", "திருவோணம் (சாத்தியம்)",
-    "அவிட்டம் (சுபம்)", "சதயம் (சுப்பிரம்)", "பூரட்டாதி (பிரம்மம்)", "உத்திரட்டாதி (மாஹேத்திரம்)", "ரேவதி (வைதிருதி)"
-  ];
+  <script>
+    const nakshatras = [
+      "அசுவினி (விஷ்கம்பம்)", "பரணி (ப்ரீதி)", "கார்த்திகை (ஆயுஷ்மான்)", "ரோகிணி (சௌபாக்கியம்)", "மிருகசீரிடம் (சோபனம்)", "திருவாதிரை (அதிகண்டம்)", "புனர்பூசம் (சுகர்மம்)",
+      "பூசம் (திருதி)", "ஆயில்யம் (சூலம்)", "மகம் (கண்டம்)", "பூரம் (விருத்தி)", "உத்திரம் (துருவம்)", "அஸ்தம் (வியாகாதம்)", "சித்திரை (ஹர்சனம்)", "சுவாதி (வஜ்ரம்)",
+      "விசாகம் (சித்தி)", "அனுஷம் (வியதீபாதம்)", "கேட்டை (வரியான்)", "மூலம் (பரீகம்)", "பூராடம் (சிவம்)", "உத்திராடம் (சித்தம்)", "திருவோணம் (சாத்தியம்)",
+      "அவிட்டம் (சுபம்)", "சதயம் (சுப்பிரம்)", "பூரட்டாதி (பிரம்மம்)", "உத்திரட்டாதி (மாஹேத்திரம்)", "ரேவதி (வைதிருதி)"
+    ];
 
-  const select = document.getElementById("nakshatra");
-  nakshatras.forEach((nakshatra, i) => {
-    const option = document.createElement("option");
-    option.value = i;
-    option.textContent = nakshatra;
-    select.appendChild(option);
-  });
+    const select = document.getElementById("nakshatra");
+    nakshatras.forEach((nakshatra, i) => {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = nakshatra;
+      select.appendChild(option);
+    });
 
-  function calculate() {
-    const selectedIndex = parseInt(select.value);
-    const output = document.getElementById("output");
+    function calculate() {
+      const selectedIndex = parseInt(select.value);
+      const output = document.getElementById("output");
 
-    if (isNaN(selectedIndex)) {
-      output.style.display = "none";
-      alert("தயவுசெய்து ஒரு நட்சத்திரத்தைத் தேர்ந்தெடுக்கவும்.");
-      return;
+      if (isNaN(selectedIndex)) {
+        output.style.display = "none";
+        alert("தயவுசெய்து ஒரு நட்சத்திரத்தைத் தேர்ந்தெடுக்கவும்.");
+        return;
+      }
+
+      const vainasikamIndex = (selectedIndex + 21) % 27;
+      const vathaiIndex = (selectedIndex + 6) % 27;
+      const yogiIndex = (selectedIndex + 7) % 27;
+      const avayogiIndex = (selectedIndex + 21) % 27;
+
+      output.innerHTML = `
+        <span class="emoji">🌠</span><strong>நட்சத்திரம்:</strong> ${nakshatras[selectedIndex]}<br>
+        <span class="emoji">🚫</span><strong>வைநாசிகம்:</strong> ${nakshatras[vainasikamIndex]}<br>
+        <span class="emoji">⚡</span><strong>வதை நட்சத்திரம்:</strong> ${nakshatras[vathaiIndex]}<br>
+        <span class="emoji">🧘</span><strong>யோகி நட்சத்திரம்:</strong> ${nakshatras[yogiIndex]}<br>
+        <span class="emoji">🚫</span><strong>அவயோகி:</strong> ${nakshatras[avayogiIndex]}
+      `;
+      output.style.display = "block";
     }
-
-    const vainasikamIndex = (selectedIndex + 21) % 27;  // 22nd
-    const vathaiIndex = (selectedIndex + 6) % 27;       // 7th
-    const yogiIndex = (selectedIndex + 7) % 27;   // 8th
-    const avayogiIndex = (selectedIndex + 21) % 27;   // 22th
-
-    output.innerHTML = `
-      <strong>உங்கள் நட்சத்திரம்:</strong> ${nakshatras[selectedIndex]}<br><br>
-      <strong>வைநாசிக நட்சத்திரம்:</strong> ${nakshatras[vainasikamIndex]}<br>
-      <strong>வதை நட்சத்திரம்:</strong> ${nakshatras[vathaiIndex]}<br>
-      <strong>யோகி நட்சத்திரம்:</strong> ${nakshatras[yogiIndex]}
-      <strong>அவயோக நட்சத்திரம்:</strong> ${nakshatras[avayogiIndex]}
-    `;
-    output.style.display = "block";
-  }
-</script>
+  </script>
 
 </body>
 </html>
