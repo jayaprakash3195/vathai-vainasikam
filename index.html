@@ -2,7 +2,7 @@
 <html lang="ta">
 <head>
   <meta charset="UTF-8" />
-  <title>நட்சத்திர கணிப்பு</title>
+  <title>நட்சத்திரம் மற்றும் யோக அம்சங்கள்</title>
   <style>
     body {
       background: linear-gradient(to right, #fff5e1, #ffe6f0);
@@ -10,7 +10,6 @@
       margin: 0;
       padding: 0;
     }
-
     .container {
       max-width: 600px;
       margin: 4rem auto;
@@ -20,45 +19,39 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       text-align: center;
     }
-
     h2 {
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
       color: #4e1a3d;
     }
-
     label {
       font-size: 1.2rem;
       display: block;
       margin-bottom: 0.5rem;
     }
-
     select {
       width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
       border-radius: 8px;
       border: 1px solid #aaa;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
-
     button {
       background-color: #e91e63;
       color: white;
       font-size: 1.1rem;
-      padding: 0.75rem 2rem;
+      padding: 0.5rem 1.5rem;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      margin-top: 1rem;
     }
-
     button:hover {
       background-color: #c2185b;
     }
-
     .result {
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       background: #fdf4f5;
       padding: 1.5rem;
       border-radius: 12px;
@@ -68,13 +61,11 @@
       text-align: left;
       line-height: 2rem;
     }
-
     .result strong {
       color: #ad1457;
     }
-
     .emoji {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       margin-right: 0.5rem;
     }
   </style>
@@ -82,57 +73,97 @@
 <body>
 
   <div class="container">
-    <h2>🌟 நட்சத்திர கணிப்பு</h2>
+    <h2>🌟 நட்சத்திரம் & யோகம் </h2>
 
+    <!-- Nakshatra Section -->
     <label for="nakshatra">🪷 உங்கள் நட்சத்திரத்தைத் தேர்ந்தெடுக்கவும்:</label>
     <select id="nakshatra">
-      <option value="">-- தேர்வு செய்யவும் --</option>
+      <option value="">-- நட்சத்திரம் தேர்வு செய்யவும் --</option>
     </select>
+    <button onclick="showNakshatraResult()">🔍 வதை / வைநாசிகம்</button>
+    <div id="nakshatraResult" class="result" style="display:none;"></div>
 
-    <button onclick="calculate()">🔍 கணக்கிடு</button>
+    <hr style="margin: 2rem 0; border: none; border-top: 1px dashed #ccc;" />
 
-    <div id="output" class="result" style="display:none;"></div>
+    <!-- Yogam Section -->
+    <label for="yogam">🧘 உங்கள் யோகத்தைத் தேர்ந்தெடுக்கவும்:</label>
+    <select id="yogam">
+      <option value="">-- யோகம் தேர்வு செய்யவும் --</option>
+    </select>
+    <button onclick="showYogamResult()">🔍 யோகி / அவயோகி (நட்சத்திரம்)</button>
+    <div id="yogamResult" class="result" style="display:none;"></div>
+
   </div>
 
   <script>
-    const nakshatras = [
-      "அசுவினி (விஷ்கம்பம்)", "பரணி (ப்ரீதி)", "கார்த்திகை (ஆயுஷ்மான்)", "ரோகிணி (சௌபாக்கியம்)", "மிருகசீரிடம் (சோபனம்)", "திருவாதிரை (அதிகண்டம்)", "புனர்பூசம் (சுகர்மம்)",
-      "பூசம் (திருதி)", "ஆயில்யம் (சூலம்)", "மகம் (கண்டம்)", "பூரம் (விருத்தி)", "உத்திரம் (துருவம்)", "அஸ்தம் (வியாகாதம்)", "சித்திரை (ஹர்சனம்)", "சுவாதி (வஜ்ரம்)",
-      "விசாகம் (சித்தி)", "அனுஷம் (வியதீபாதம்)", "கேட்டை (வரியான்)", "மூலம் (பரீகம்)", "பூராடம் (சிவம்)", "உத்திராடம் (சித்தம்)", "திருவோணம் (சாத்தியம்)",
-      "அவிட்டம் (சுபம்)", "சதயம் (சுப்பிரம்)", "பூரட்டாதி (பிரம்மம்)", "உத்திரட்டாதி (மாஹேத்திரம்)", "ரேவதி (வைதிருதி)"
+    const nakshatraList = [
+      "அசுவினி", "பரணி", "கார்த்திகை", "ரோகிணி", "மிருகசீரிடம்", "திருவாதிரை", "புனர்பூசம்",
+      "பூசம்", "ஆயில்யம்", "மகம்", "பூரம்", "உத்திரம்", "அஸ்தம்", "சித்திரை", "சுவாதி",
+      "விசாகம்", "அனுஷம்", "கேட்டை", "மூலம்", "பூராடம்", "உத்திராடம்", "திருவோணம்",
+      "அவிட்டம்", "சதயம்", "பூரட்டாதி", "உத்திரட்டாதி", "ரேவதி"
     ];
 
-    const select = document.getElementById("nakshatra");
-    nakshatras.forEach((nakshatra, i) => {
-      const option = document.createElement("option");
-      option.value = i;
-      option.textContent = nakshatra;
-      select.appendChild(option);
+    const yogamList = [
+      "விஷ்கம்பம்", "ப்ரீதி", "ஆயுஷ்மான்", "சௌபாக்கியம்", "சோபனம்", "அதிகண்டம்", "சுகர்மம்",
+      "திருதி", "சூலம்", "கண்டம்", "விருத்தி", "துருவம்", "வியாகாதம்", "ஹர்சனம்", "வஜ்ரம்",
+      "சித்தி", "வியதீபாதம்", "வரியான்", "பரீகம்", "சிவம்", "சித்தம்", "சாத்தியம்",
+      "சுபம்", "சுப்பிரம்", "பிரம்மம்", "மாஹேத்திரம்", "வைதிருதி"
+    ];
+
+    // Populate dropdowns
+    const nakshatraSelect = document.getElementById("nakshatra");
+    const yogamSelect = document.getElementById("yogam");
+
+    nakshatraList.forEach((name, i) => {
+      nakshatraSelect.add(new Option(name, i));
     });
 
-    function calculate() {
-      const selectedIndex = parseInt(select.value);
-      const output = document.getElementById("output");
+    yogamList.forEach((name, i) => {
+      yogamSelect.add(new Option(name, i));
+    });
 
-      if (isNaN(selectedIndex)) {
-        output.style.display = "none";
-        alert("தயவுசெய்து ஒரு நட்சத்திரத்தைத் தேர்ந்தெடுக்கவும்.");
+    // Nakshatra logic
+    function showNakshatraResult() {
+      const index = parseInt(nakshatraSelect.value);
+      const result = document.getElementById("nakshatraResult");
+
+      if (isNaN(index)) {
+        alert("நட்சத்திரத்தைத் தேர்ந்தெடுக்கவும்.");
+        result.style.display = "none";
         return;
       }
 
-      const vainasikamIndex = (selectedIndex + 21) % 27;
-      const vathaiIndex = (selectedIndex + 6) % 27;
-      const yogiIndex = (selectedIndex + 7) % 27;
-      const avayogiIndex = (selectedIndex + 21) % 27;
+      const vathaiIndex = (index + 6) % 27;
+      const vainasikamIndex = (index + 21) % 27;
 
-      output.innerHTML = `
-        <span class="emoji">🌠</span><strong>நட்சத்திரம்:</strong> ${nakshatras[selectedIndex]}<br><br>
-        <span class="emoji">🌠</span><strong>வைநாசிகம்:</strong> ${nakshatras[vainasikamIndex]}<br><br>
-        <span class="emoji">⚡</span><strong>வதை நட்சத்திரம்:</strong> ${nakshatras[vathaiIndex]}<br><br>
-        <span class="emoji">🧘</span><strong>யோகி நட்சத்திரம்:</strong> ${nakshatras[yogiIndex]}<br><br>
-        <span class="emoji">🚫</span><strong>அவயோகி:</strong> ${nakshatras[avayogiIndex]}
+      result.innerHTML = `
+        <span class="emoji">🌟</span><strong>தேர்ந்தெடுத்த நட்சத்திரம்:</strong> ${nakshatraList[index]}<br><br>
+        <span class="emoji">⚡</span><strong>வதை நட்சத்திரம் (7வது):</strong> ${nakshatraList[vathaiIndex]}<br><br>
+        <span class="emoji">🚫</span><strong>வைநாசிகம் (22வது):</strong> ${nakshatraList[vainasikamIndex]}
       `;
-      output.style.display = "block";
+      result.style.display = "block";
+    }
+
+    // Yogam logic (updated to show Nakshatra instead of Yogam)
+    function showYogamResult() {
+      const index = parseInt(yogamSelect.value);
+      const result = document.getElementById("yogamResult");
+
+      if (isNaN(index)) {
+        alert("யோகத்தைத் தேர்ந்தெடுக்கவும்.");
+        result.style.display = "none";
+        return;
+      }
+
+      const yogiIndex = (index + 7) % 27;
+      const avayogiIndex = (index + 21) % 27;
+
+      result.innerHTML = `
+        <span class="emoji">🧘</span><strong>தேர்ந்தெடுத்த யோகம்:</strong> ${yogamList[index]}<br><br>
+        <span class="emoji">🌠</span><strong>யோகி நட்சத்திரம் (8வது):</strong> ${nakshatraList[yogiIndex]}<br><br>
+        <span class="emoji">🚫</span><strong>அவயோகி நட்சத்திரம் (22வது):</strong> ${nakshatraList[avayogiIndex]}
+      `;
+      result.style.display = "block";
     }
   </script>
 
